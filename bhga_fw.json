@@ -1,0 +1,92 @@
+{
+    "index": "event_201805*",
+    "host": "http://ti.csecsc.org:8090",
+    "timeout": 600,
+
+    "event_type": "网络连接",
+
+    "field": {
+        "timestamp": "occur_time",
+        "src_ip": "src_address",
+        "proto": false,
+        "dst_ip": "dst_address",
+        "dst_port": "dst_port",
+        "flow_id": false,
+        "flow_age": false,
+        "flow_bytes_toserver": false
+    },
+
+    "period": 24,
+    "min_occur": 120,
+    "min_interval": 60,
+    "min_percent": 30,
+    "window": 3,
+    "threads": 8,
+
+    "product": "ep",
+
+    "must": [
+        {
+            "terms": {
+                "dev_address": ["192.168.1.254"]
+            },
+            "terms": {
+                "rule_name": [
+                    "FW_天融信_通用_2"
+                ]
+            }
+        }
+    ],
+
+    "must_not": [
+        {
+            "terms": {
+                "dst_port": [
+                    123,
+                    53
+                ]
+            }
+        },
+        {
+            "wildcard": {
+                "dst_address_str": "172.17.*.*"
+            }
+        },
+        {
+            "wildcard": {
+                "dst_address_str": "172.27.*.*"
+            }
+        },
+        {
+            "wildcard": {
+                "dst_address_str": "172.31.*.*"
+            }
+        },
+        {
+            "wildcard": {
+                "dst_address_str": "192.168.*.*"
+            }
+        },
+        {
+            "wildcard": {
+                "dst_address_str": "10.*.*.*"
+            }
+        }
+    ],
+
+    "columns": {
+        "basis_columns": [
+            "src_ip",
+            "dst_ip",
+            "dst_port",
+            "det_degree",
+            "occurrences",
+            "percent",
+            "interval"
+        ],
+        "ext_columns": [
+            "proto",
+            "flow_bytes_toserver"
+        ]
+    }
+}

@@ -1,0 +1,104 @@
+{
+    "index": "event_201805*",
+    "host": "http://172.16.100.196:9200/",
+    "timeout": 600,
+
+    "event_type": "网络连接",
+
+    "field": {
+        "timestamp": "@timestamp",
+        "src_ip": "src_ip",
+        "proto": "proto",
+        "dst_ip": "dst_ip",
+        "dst_port": "dst_port",
+        "flow_id": "flow_id",
+        "flow_age": "age",
+        "flow_bytes_toserver": "bytes_toserver"
+    },
+
+    "period": 72,
+    "min_occur": 60,
+    "min_interval": 30,
+    "min_percent": 10,
+    "window": 3,
+    "threads": 8,
+
+    "product": "nta",
+
+    "must_not": [
+        {
+            "terms": {
+                "dst_port": [
+                    123,
+                    53
+                ]
+            }
+        },
+        {
+            "wildcard": {
+                "dst_address_str": "172.17.*.*"
+            }
+        },
+        {
+            "wildcard": {
+                "dst_address_str": "172.27.*.*"
+            }
+        },
+        {
+            "wildcard": {
+                "dst_address_str": "172.31.*.*"
+            }
+        },
+        {
+            "wildcard": {
+                "dst_address_str": "192.168.*.*"
+            }
+        },
+        {
+            "wildcard": {
+                "dst_address_str": "10.*.*.*"
+            }
+        }
+    ],
+
+    "must": [
+        {
+            "terms": {
+                "dev_address": [
+                    "172.16.100.194"
+                ]
+            }
+        },
+        {
+            "terms": {
+                "dst_port": [
+                    22
+                ]
+            }
+        }
+    ],
+
+    "columns": {
+        "basis_columns": [
+            "src_ip",
+            "dst_ip",
+            "dst_port",
+            "det_degree",
+            "occurrences",
+            "percent",
+            "interval"
+        ],
+        "ext_columns": [
+            "proto",
+            "flow_bytes_sum",
+            "flow_bytes_min",
+            "flow_bytes_max",
+            "flow_bytes_mean",
+            "flow_bytes_std",
+            "flow_age_min",
+            "flow_age_max",
+            "flow_age_mean",
+            "flow_age_std"
+        ]
+    }
+}
